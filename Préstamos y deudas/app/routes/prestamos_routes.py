@@ -21,28 +21,28 @@ def obtener_prestamo(prestamo_id):
 def crear_prestamo():
     cursor = mysql.connection.cursor()
     data = request.get_json()
-    usuario_id = g.usuario_id  # Suponiendo que el ID del usuario se obtiene del token JWT
+    usuario_id = g.usuario_id  
     monto = data.get('monto')
     fecha_inicio = data.get('fecha_inicio')
     fecha_fin = data.get('fecha_fin')
     interes = data.get('interes')
 
-    # Verificar que todos los campos requeridos estén presentes
+ 
     if not all([usuario_id, monto, fecha_inicio, fecha_fin, interes]):
         return jsonify({'error': 'Faltan datos'}), 400
 
-    # Verificar si el préstamo es aceptado basándose en el historial crediticio
+   
     aceptado = Prestamo.verificar_aceptacion_prestamo(usuario_id, monto)
 
     if aceptado:
-        # Llamar al método para crear el préstamo en la base de datos
+      
         try:
             Prestamo.crear_prestamo(usuario_id, monto, fecha_inicio, fecha_fin, interes)
-            mysql.connection.commit()  # Confirmar cambios en la base de datos
+            mysql.connection.commit()  
             return jsonify({'mensaje': 'Préstamo creado con éxito'}), 201
         except Exception as e:
-            mysql.connection.rollback()  # Revertir en caso de error
-            return jsonify({'error': str(e)}), 500  # Devolver error si falla la creación
+            mysql.connection.rollback()  
+            return jsonify({'error': str(e)}), 500  
     else:
         return jsonify({'mensaje': 'Préstamo rechazado por historial crediticio'}), 400
 @prestamo_bp.route('/prestamos/<int:prestamo_id>', methods=['PUT'])

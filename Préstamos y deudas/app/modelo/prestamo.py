@@ -50,18 +50,17 @@ class Prestamo:
 
     @staticmethod
     def verificar_aceptacion_prestamo(usuario_id, monto):
-        # Aquí debes implementar la lógica para verificar el historial crediticio
-        # Este es un ejemplo básico
+        
         cursor = mysql.connection.cursor()
 
-        # Suponiendo que tienes una tabla HistorialCrediticio para verificar
+
         cursor.execute("SELECT score FROM historialcrediticio WHERE usuario_id = %s", (usuario_id,))
         resultado = cursor.fetchone()
         
         if resultado:
             score_crediticio = resultado['score']
-            # Lógica para decidir si el préstamo es aceptado
-            if score_crediticio > 600:  # Por ejemplo, aceptamos si el score es mayor a 600
+           
+            if score_crediticio > 600:  
                 cursor.close()
                 return True
             else:
@@ -69,4 +68,4 @@ class Prestamo:
                 return False
         else:
             cursor.close()
-            return False  # Si no hay historial, rechazamos el préstamo
+            return False 

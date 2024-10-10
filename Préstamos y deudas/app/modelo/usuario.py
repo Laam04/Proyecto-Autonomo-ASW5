@@ -22,8 +22,8 @@ class Usuario:
     def obtener_usuarios():
         cursor = mysql.connection.cursor()
         try:
-            cursor.execute("SELECT * FROM Usuarios")  # Asegúrate de que la tabla se llama 'Usuarios'
-            usuarios = cursor.fetchall()  # Obtiene todos los resultados
+            cursor.execute("SELECT * FROM usuarios")  
+            usuarios = cursor.fetchall() 
             
             return [{'id': usuario[0], 'nombre': usuario[1], 'email': usuario[2], 'telefono': usuario[3]} for usuario in usuarios]
         except Exception as e:
