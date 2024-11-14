@@ -1,0 +1,96 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Prestamo {
+  id: Int!
+  monto: Float!
+  fechaInicio: String!
+  fechaFin: String!
+  tasaInteres: Float!
+  descripcion: String!
+}
+
+type Pago {
+  id: Int!
+  monto: Float!
+  fechaPago: String!
+  descripcion: String!
+  fechaVencimiento: String!
+}
+
+type Deuda {
+  id: Int!
+  montoTotal: Float!
+  descripcion: String!
+  fechaCreacion: String!
+  fechaVencimiento: String
+}
+
+type Query {
+  prestamos: [Prestamo!]!
+  prestamo(id: Int!): Prestamo!
+  pagos: [Pago!]!
+  pago(id: Int!): Pago!
+  deudas: [Deuda!]!
+  deuda(id: Int!): Deuda!
+}
+
+type Mutation {
+  createPrestamo(createPrestamoInput: CreatePrestamoInput!): Prestamo!
+  updatePrestamo(updatePrestamoInput: UpdatePrestamoInput!): Prestamo!
+  removePrestamo(id: Int!): Prestamo!
+  createPago(createPagoInput: CreatePagoInput!): Pago!
+  updatePago(updatePagoInput: UpdatePagoInput!): Pago!
+  removePago(id: Int!): Pago!
+  createDeuda(createDeudaInput: CreateDeudaInput!): Deuda!
+  updateDeuda(updateDeudaInput: UpdateDeudaInput!): Deuda!
+  removeDeuda(id: Int!): Deuda!
+}
+
+input CreatePrestamoInput {
+  monto: Float!
+  fechaInicio: String!
+  fechaFin: String!
+  tasaInteres: Float!
+  descripcion: String!
+}
+
+input UpdatePrestamoInput {
+  id: Int!
+  monto: Float
+  fechaInicio: String
+  fechaFin: String
+  tasaInteres: Float
+  descripcion: String
+}
+
+input CreatePagoInput {
+  monto: Float!
+  descripcion: String!
+  fechaPago: String!
+  fechaVencimiento: String!
+}
+
+input UpdatePagoInput {
+  id: Int!
+  monto: Float!
+  descripcion: String!
+  fechaPago: String!
+  fechaVencimiento: String!
+}
+
+input CreateDeudaInput {
+  montoTotal: Float!
+  descripcion: String!
+  fechaCreacion: String!
+  fechaVencimiento: String
+}
+
+input UpdateDeudaInput {
+  id: Int!
+  montoTotal: Float!
+  descripcion: String!
+  fechaCreacion: String!
+  fechaVencimiento: String
+}
