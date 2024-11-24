@@ -1,35 +1,35 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { GastosService } from './gastos.service';
-import { Gasto } from './entities/gasto.entity';
-import { CreateGastoInput } from './dto/create-gasto.input';
-import { UpdateGastoInput } from './dto/update-gasto.input';
+import { Gastos } from './entities/gasto.entity';
+import { CreateGastoDto } from './dto/create-gasto.dto';
+import { UpdateGastoDto } from './dto/update-gasto.dto';
 
-@Resolver(() => Gasto)
+@Resolver(() => Gastos)
 export class GastosResolver {
   constructor(private readonly gastosService: GastosService) {}
 
-  @Mutation(() => Gasto)
-  createGasto(@Args('createGastoInput') createGastoInput: CreateGastoInput) {
-    return this.gastosService.create(createGastoInput);
-  }
-
-  @Query(() => [Gasto], { name: 'gastos' })
+  @Query(() => [Gastos])
   findAll() {
     return this.gastosService.findAll();
   }
 
-  @Query(() => Gasto, { name: 'gasto' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Gastos)
+  findOne(@Args('id') id: number) {
     return this.gastosService.findOne(id);
   }
 
-  @Mutation(() => Gasto)
-  updateGasto(@Args('updateGastoInput') updateGastoInput: UpdateGastoInput) {
-    return this.gastosService.update(updateGastoInput.id, updateGastoInput);
+  @Mutation(() => Gastos)
+  createGasto(@Args('createGastoDto') createGastoDto: CreateGastoDto) {
+    return this.gastosService.create(createGastoDto);
   }
 
-  @Mutation(() => Gasto)
-  removeGasto(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Gastos)
+  updateGasto(@Args('id') id: number, @Args('updateGastoDto') updateGastoDto: UpdateGastoDto) {
+    return this.gastosService.update(id, updateGastoDto);
+  }
+
+  @Mutation(() => Boolean)
+  removeGasto(@Args('id') id: number) {
     return this.gastosService.remove(id);
   }
 }

@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
 import { GastosService } from './gastos.service';
-import { CreateGastoInput } from './dto/create-gasto.input';
-import { UpdateGastoInput } from './dto/update-gasto.input';
+import { CreateGastoDto } from './dto/create-gasto.dto';
+import { UpdateGastoDto } from './dto/update-gasto.dto';
 
 @Controller('gastos')
 export class GastosController {
   constructor(private readonly gastosService: GastosService) {}
 
   @Post()
-  create(@Body() createGastoInput: CreateGastoInput) {
-    return this.gastosService.create(createGastoInput);
+  create(@Body() createGastoDto: CreateGastoDto) {
+    return this.gastosService.create(createGastoDto);
   }
 
   @Get()
@@ -23,7 +23,7 @@ export class GastosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGastoDto: UpdateGastoInput) {
+  update(@Param('id') id: string, @Body() updateGastoDto: UpdateGastoDto) {
     return this.gastosService.update(+id, updateGastoDto);
   }
 

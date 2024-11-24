@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGastoInput } from './dto/create-gasto.input';
-import { UpdateGastoInput } from './dto/update-gasto.input';
+import { CreateGastoDto } from './dto/create-gasto.dto';
+import { UpdateGastoDto } from './dto/update-gasto.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, FindOneOptions } from 'typeorm';
+import { Gastos } from './entities/gasto.entity';
 
 @Injectable()
 export class GastosService {
-  create(createGastoInput: CreateGastoInput) {
-    return 'This action adds a new gasto';
+  constructor(
+    @InjectRepository(Gastos)
+    private readonly gastosRepository: Repository<Gastos>,
+  ) {}
+
+  create(createGastoDto: CreateGastoDto) {
+    const gasto = this.gastosRepository.create(createGastoDto);
+    return this.gastosRepository.save(gasto);
   }
 
   findAll() {
-    return `This action returns all gastos`;
+    return this.gastosRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gasto`;
+  async findOne(id: number) {
+    // Aquí corregimos la llamada a findOne, pasamos un objeto con la clave `where`
+    const options: FindOneOptions<Gastos> = {
+      where: { id },
+    };
+    return this.gastosRepository.findOne(options);
   }
 
-  update(id: number, updateGastoInput: UpdateGastoInput) {
-    return `This action updates a #${id} gasto`;
+  update(id: number, updateGastoDto: UpdateGastoDto) {
+    return this.gastosRepository.update(id, updateGastoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} gasto`;
+    return this.gastosRepository.delete(id);
   }
 }

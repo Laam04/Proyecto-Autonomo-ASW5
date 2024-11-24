@@ -1,35 +1,35 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FuentesIngresoService } from './fuentes-ingreso.service';
-import { FuentesIngreso } from './entities/fuentes-ingreso.entity';
-import { CreateFuentesIngresoInput } from './dto/create-fuentes-ingreso.input';
-import { UpdateFuentesIngresoInput } from './dto/update-fuentes-ingreso.input';
+import { FuenteIngreso } from './entities/fuentes-ingreso.entity';
+import { CreateFuenteIngresoDto } from './dto/create-fuentes-ingreso.dto';
+import { UpdateFuenteIngresoDto } from './dto/update-fuentes-ingreso.dto';
 
-@Resolver(() => FuentesIngreso)
+@Resolver(() => FuenteIngreso)
 export class FuentesIngresoResolver {
   constructor(private readonly fuentesIngresoService: FuentesIngresoService) {}
 
-  @Mutation(() => FuentesIngreso)
-  createFuentesIngreso(@Args('createFuentesIngresoInput') createFuentesIngresoInput: CreateFuentesIngresoInput) {
-    return this.fuentesIngresoService.create(createFuentesIngresoInput);
-  }
-
-  @Query(() => [FuentesIngreso], { name: 'fuentesIngreso' })
+  @Query(() => [FuenteIngreso])
   findAll() {
     return this.fuentesIngresoService.findAll();
   }
 
-  @Query(() => FuentesIngreso, { name: 'fuentesIngreso' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => FuenteIngreso)
+  findOne(@Args('id') id: number) {
     return this.fuentesIngresoService.findOne(id);
   }
 
-  @Mutation(() => FuentesIngreso)
-  updateFuentesIngreso(@Args('updateFuentesIngresoInput') updateFuentesIngresoInput: UpdateFuentesIngresoInput) {
-    return this.fuentesIngresoService.update(updateFuentesIngresoInput.id, updateFuentesIngresoInput);
+  @Mutation(() => FuenteIngreso)
+  createFuenteIngreso(@Args('createFuenteIngresoDto') createFuenteIngresoDto: CreateFuenteIngresoDto) {
+    return this.fuentesIngresoService.create(createFuenteIngresoDto);
   }
 
-  @Mutation(() => FuentesIngreso)
-  removeFuentesIngreso(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => FuenteIngreso)
+  updateFuenteIngreso(@Args('id') id: number, @Args('updateFuenteIngresoDto') updateFuenteIngresoDto: UpdateFuenteIngresoDto) {
+    return this.fuentesIngresoService.update(id, updateFuenteIngresoDto);
+  }
+
+  @Mutation(() => Boolean)
+  removeFuenteIngreso(@Args('id') id: number) {
     return this.fuentesIngresoService.remove(id);
   }
 }

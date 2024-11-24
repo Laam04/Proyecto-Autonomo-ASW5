@@ -1,35 +1,35 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { IngresosService } from './ingresos.service';
-import { Ingreso } from './entities/ingreso.entity';
-import { CreateIngresoInput } from './dto/create-ingreso.input';
-import { UpdateIngresoInput } from './dto/update-ingreso.input';
+import { Ingresos } from './entities/ingreso.entity';
+import { CreateIngresoDto } from './dto/create-ingreso.dto';
+import { UpdateIngresoDto } from './dto/update-ingreso.dto';
 
-@Resolver(() => Ingreso)
+@Resolver(() => Ingresos)
 export class IngresosResolver {
   constructor(private readonly ingresosService: IngresosService) {}
 
-  @Mutation(() => Ingreso)
-  createIngreso(@Args('createIngresoInput') createIngresoInput: CreateIngresoInput) {
-    return this.ingresosService.create(createIngresoInput);
-  }
-
-  @Query(() => [Ingreso], { name: 'ingresos' })
+  @Query(() => [Ingresos])
   findAll() {
     return this.ingresosService.findAll();
   }
 
-  @Query(() => Ingreso, { name: 'ingreso' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  @Query(() => Ingresos)
+  findOne(@Args('id') id: number) {
     return this.ingresosService.findOne(id);
   }
 
-  @Mutation(() => Ingreso)
-  updateIngreso(@Args('updateIngresoInput') updateIngresoInput: UpdateIngresoInput) {
-    return this.ingresosService.update(updateIngresoInput.id, updateIngresoInput);
+  @Mutation(() => Ingresos)
+  createIngreso(@Args('createIngresoDto') createIngresoDto: CreateIngresoDto) {
+    return this.ingresosService.create(createIngresoDto);
   }
 
-  @Mutation(() => Ingreso)
-  removeIngreso(@Args('id', { type: () => Int }) id: number) {
+  @Mutation(() => Ingresos)
+  updateIngreso(@Args('id') id: number, @Args('updateIngresoDto') updateIngresoDto: UpdateIngresoDto) {
+    return this.ingresosService.update(id, updateIngresoDto);
+  }
+
+  @Mutation(() => Boolean)
+  removeIngreso(@Args('id') id: number) {
     return this.ingresosService.remove(id);
   }
 }

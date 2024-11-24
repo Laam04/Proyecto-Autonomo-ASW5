@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFuentesIngresoInput } from './dto/create-fuentes-ingreso.input';
-import { UpdateFuentesIngresoInput } from './dto/update-fuentes-ingreso.input';
+import { CreateFuenteIngresoDto } from './dto/create-fuentes-ingreso.dto';
+import { UpdateFuenteIngresoDto } from './dto/update-fuentes-ingreso.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { FuenteIngreso } from './entities/fuentes-ingreso.entity';
 
 @Injectable()
 export class FuentesIngresoService {
-  create(createFuentesIngresoInput: CreateFuentesIngresoInput) {
-    return 'This action adds a new fuentesIngreso';
+  constructor(
+    @InjectRepository(FuenteIngreso)
+    private readonly fuentesIngresoRepository: Repository<FuenteIngreso>,
+  ) {}
+
+  create(createFuenteIngresoDto: CreateFuenteIngresoDto) {
+    const fuenteIngreso = this.fuentesIngresoRepository.create(createFuenteIngresoDto);
+    return this.fuentesIngresoRepository.save(fuenteIngreso);
   }
 
   findAll() {
-    return `This action returns all fuentesIngreso`;
+    return this.fuentesIngresoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} fuentesIngreso`;
+  async findOne(id: number) {
+    return this.fuentesIngresoRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateFuentesIngresoInput: UpdateFuentesIngresoInput) {
-    return `This action updates a #${id} fuentesIngreso`;
+  update(id: number, updateFuenteIngresoDto: UpdateFuenteIngresoDto) {
+    return this.fuentesIngresoRepository.update(id, updateFuenteIngresoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} fuentesIngreso`;
+    return this.fuentesIngresoRepository.delete(id);
   }
 }

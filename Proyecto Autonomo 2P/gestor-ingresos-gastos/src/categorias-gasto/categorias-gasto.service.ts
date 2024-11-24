@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCategoriasGastoInput } from './dto/create-categorias-gasto.input';
-import { UpdateCategoriasGastoInput } from './dto/update-categorias-gasto.input';
+import { CreateCategoriaGastoDto } from './dto/create-categorias-gasto.dto';
+import { UpdateCategoriaGastoDto } from './dto/update-categorias-gasto.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CategoriaGasto } from './entities/categorias-gasto.entity';
 
 @Injectable()
 export class CategoriasGastoService {
-  create(createCategoriasGastoInput: CreateCategoriasGastoInput) {
-    return 'This action adds a new categoriasGasto';
+  constructor(
+    @InjectRepository(CategoriaGasto)
+    private readonly categoriasGastoRepository: Repository<CategoriaGasto>,
+  ) {}
+
+  create(createCategoriaGastoDto: CreateCategoriaGastoDto) {
+    const categoriaGasto = this.categoriasGastoRepository.create(createCategoriaGastoDto);
+    return this.categoriasGastoRepository.save(categoriaGasto);
   }
 
   findAll() {
-    return `This action returns all categoriasGasto`;
+    return this.categoriasGastoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} categoriasGasto`;
+  async findOne(id: number) {
+    return this.categoriasGastoRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateCategoriasGastoInput: UpdateCategoriasGastoInput) {
-    return `This action updates a #${id} categoriasGasto`;
+  update(id: number, updateCategoriaGastoDto: UpdateCategoriaGastoDto) {
+    return this.categoriasGastoRepository.update(id, updateCategoriaGastoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} categoriasGasto`;
+    return this.categoriasGastoRepository.delete(id);
   }
 }

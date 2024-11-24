@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { CreateIngresoInput } from './dto/create-ingreso.input';
-import { UpdateIngresoInput } from './dto/update-ingreso.input';
+import { CreateIngresoDto } from './dto/create-ingreso.dto';
+import { UpdateIngresoDto } from './dto/update-ingreso.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Ingresos } from './entities/ingreso.entity';
 
 @Injectable()
 export class IngresosService {
-  create(createIngresoInput: CreateIngresoInput) {
-    return 'This action adds a new ingreso';
+  constructor(
+    @InjectRepository(Ingresos)
+    private readonly ingresosRepository: Repository<Ingresos>,
+  ) {}
+
+  create(createIngresoDto: CreateIngresoDto) {
+    const ingreso = this.ingresosRepository.create(createIngresoDto);
+    return this.ingresosRepository.save(ingreso);
   }
 
   findAll() {
-    return `This action returns all ingresos`;
+    return this.ingresosRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ingreso`;
+  async findOne(id: number) {
+    return this.ingresosRepository.findOne({
+      where: { id },
+    });
   }
 
-  update(id: number, updateIngresoInput: UpdateIngresoInput) {
-    return `This action updates a #${id} ingreso`;
+  update(id: number, updateIngresoDto: UpdateIngresoDto) {
+    return this.ingresosRepository.update(id, updateIngresoDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} ingreso`;
+    return this.ingresosRepository.delete(id);
   }
 }
