@@ -1,0 +1,105 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type FuenteIngreso {
+  id: ID!
+  nombre: String!
+  ingresos: [Ingreso!]!
+}
+
+type Ingreso {
+  id: ID!
+  nombre: String!
+  monto: Float!
+  fecha: String!
+  fuenteIngreso: FuenteIngreso!
+}
+
+type CategoriaGasto {
+  id: ID!
+  nombre: String!
+  gastos: [Gasto!]!
+}
+
+type Gasto {
+  id: ID!
+  descripcion: String!
+  monto: Float!
+  fecha: String!
+  categoriaGasto: CategoriaGasto!
+  categoriaGastoNombre: String!
+}
+
+type Query {
+  ingresos: [Ingreso!]!
+  ingreso(id: Int!): Ingreso!
+  gastos: [Gasto!]!
+  gasto(id: Int!): Gasto!
+  findAllCategoriaGasto: [CategoriaGasto!]!
+  findOneCategoriaGasto(id: Int!): CategoriaGasto!
+  fuentesIngreso: [FuenteIngreso!]!
+  fuenteIngreso(id: Int!): FuenteIngreso!
+}
+
+type Mutation {
+  createIngreso(createIngresoInput: CreateIngresoInput!): Ingreso!
+  updateIngreso(updateIngresoInput: UpdateIngresoInput!): Ingreso!
+  createGasto(createGastoInput: CreateGastoInput!): Gasto!
+  updateGasto(updateGastoInput: UpdateGastoInput!): Gasto!
+  remove(id: Int!): Boolean!
+  createCategoriaGasto(createCategoriaGastoInput: CreateCategoriaGastoInput!): CategoriaGasto!
+  updateCategoriaGasto(id: Int!, updateCategoriaGastoInput: UpdateCategoriaGastoInput!): CategoriaGasto!
+  removeCategoriaGasto(id: Int!): Boolean!
+  createFuenteIngreso(createFuenteIngresoInput: CreateFuenteIngresoInput!): FuenteIngreso!
+  updateFuenteIngreso(updateFuenteIngresoInput: UpdateFuenteIngresoInput!): FuenteIngreso!
+  removeFuenteIngreso(id: Int!): Boolean!
+}
+
+input CreateIngresoInput {
+  nombre: String!
+  monto: Float!
+  fecha: String!
+  fuenteIngresoId: Float!
+}
+
+input UpdateIngresoInput {
+  id: Float!
+  nombre: String!
+  monto: Float!
+  fecha: String!
+  fuenteIngresoId: Float!
+}
+
+input CreateGastoInput {
+  descripcion: String!
+  monto: Float!
+  fecha: String
+  categoriaGastoId: Float!
+}
+
+input UpdateGastoInput {
+  id: Int!
+  descripcion: String
+  monto: Float
+  fecha: String
+  categoriaGastoId: Float
+}
+
+input CreateCategoriaGastoInput {
+  nombre: String!
+}
+
+input UpdateCategoriaGastoInput {
+  id: Int!
+  nombre: String!
+}
+
+input CreateFuenteIngresoInput {
+  nombre: String!
+}
+
+input UpdateFuenteIngresoInput {
+  id: Int!
+  nombre: String!
+}
